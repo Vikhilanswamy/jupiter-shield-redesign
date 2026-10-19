@@ -1,75 +1,71 @@
 import React from "react";
-import { GitCommit, TrendingUp, Sparkles, Check, ArrowRight } from "lucide-react";
+import { GitCommit, Sparkles } from "lucide-react";
 
 export function RouteVisualizer({ fromToken, toToken, fromAmount, toAmount }) {
   const routes = [
-    { dex: "Meteora DLMM", share: "55%", fee: "0.01%", color: "border-emerald-500/40 text-emerald-400" },
-    { dex: "Raydium CLMM", share: "30%", fee: "0.04%", color: "border-blue-500/40 text-blue-400" },
-    { dex: "Orca Whirlpool", share: "15%", fee: "0.02%", color: "border-purple-500/40 text-purple-400" }
+    { name: "Meteora DLMM", share: 55, fee: "0.01%", color: "bg-emerald-400 text-emerald-300" },
+    { name: "Raydium CLMM", share: 30, fee: "0.04%", color: "bg-sky-400 text-sky-300" },
+    { name: "Orca Whirlpool", share: 15, fee: "0.02%", color: "bg-purple-400 text-purple-300" }
   ];
 
+  const numToAmount = Number(toAmount) || 0;
+  const decimals = toToken.symbol === "SOL" ? 4 : toToken.decimals === 5 ? 0 : 2;
+  const minReceived = (numToAmount * 0.998).toFixed(decimals);
+
   return (
-    <div className="bg-[#121620] p-3.5 rounded-2xl border border-[#21293a] space-y-2.5">
-      <div className="flex items-center justify-between text-xs">
+    <div className="bg-[#121824] p-2.5 rounded-xl border border-[#1f293b] space-y-2">
+      {/* Header */}
+      <div className="flex items-center justify-between text-[11px]">
         <div className="flex items-center gap-1.5 font-semibold text-gray-200">
-          <GitCommit className="w-3.5 h-3.5 text-[#c7f284]" />
-          <span>Optimal Smart Routing</span>
+          <GitCommit className="w-3.5 h-3.5 text-emerald-400" />
+          <span>Smart Split Route</span>
         </div>
-        <div className="flex items-center gap-1 text-[11px] text-[#c7f284] bg-[#c7f284]/10 px-2 py-0.5 rounded-full font-medium border border-[#c7f284]/20">
-          <Sparkles className="w-3 h-3" />
-          <span>+$4.18 Extra vs Single Pool</span>
+        <div className="flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-mono border border-emerald-500/20">
+          <Sparkles className="w-2.5 h-2.5" />
+          <span>+$4.18 vs single DEX</span>
         </div>
       </div>
 
-      {/* Visual Multi-Hop Node Pipeline */}
-      <div className="relative py-2 px-1">
-        <div className="flex items-center justify-between gap-2">
-          {/* Input Node */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#171d2b] border border-[#283347] text-xs font-semibold shrink-0">
-            <img src={fromToken.icon} alt={fromToken.symbol} className="w-4 h-4 rounded-full" />
-            <span>{fromToken.symbol}</span>
-          </div>
+      {/* Segmented Visual Pipeline Bar */}
+      <div className="space-y-1.5">
+        <div className="w-full h-1.5 rounded-full overflow-hidden flex bg-[#1b2333]">
+          <div style={{ width: "55%" }} className="bg-emerald-400 h-full" title="Meteora 55%" />
+          <div style={{ width: "30%" }} className="bg-sky-400 h-full" title="Raydium 30%" />
+          <div style={{ width: "15%" }} className="bg-purple-400 h-full" title="Orca 15%" />
+        </div>
 
-          {/* Splitting Paths */}
-          <div className="flex-1 grid grid-cols-3 gap-1.5">
-            {routes.map((route, i) => (
-              <div
-                key={i}
-                className={`p-1.5 rounded-lg bg-[#151b26] border ${route.color} text-center flex flex-col justify-center relative overflow-hidden`}
-              >
-                <div className="text-[10px] font-bold text-gray-200 truncate">{route.dex}</div>
-                <div className="text-[9px] font-mono text-gray-400 flex items-center justify-center gap-1">
-                  <span>{route.share}</span>
-                  <span className="text-gray-500">•</span>
-                  <span>{route.fee}</span>
-                </div>
-              </div>
-            ))}
+        {/* Route Labels - Clean, No Truncation */}
+        <div className="flex items-center justify-between text-[10px] text-gray-400 font-mono">
+          <div className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>Meteora 55%</span>
           </div>
-
-          {/* Output Node */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#171d2b] border border-[#283347] text-xs font-semibold shrink-0">
-            <img src={toToken.icon} alt={toToken.symbol} className="w-4 h-4 rounded-full" />
-            <span>{toToken.symbol}</span>
+          <div className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+            <span>Raydium 30%</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+            <span>Orca 15%</span>
           </div>
         </div>
       </div>
 
-      {/* Execution Metrics Footer */}
-      <div className="grid grid-cols-3 gap-2 pt-1 border-t border-[#1e2638] text-[11px]">
+      {/* Execution Metrics Row */}
+      <div className="grid grid-cols-3 gap-2 pt-1.5 border-t border-[#1a2333] text-[10px] font-mono">
         <div>
-          <span className="text-gray-500 block text-[10px]">Price Impact</span>
-          <span className="text-emerald-400 font-semibold">&lt; 0.01%</span>
+          <span className="text-gray-500 block text-[9px] uppercase">Price Impact</span>
+          <span className="text-emerald-400 font-medium">&lt; 0.01%</span>
         </div>
         <div>
-          <span className="text-gray-500 block text-[10px]">Min. Received</span>
-          <span className="text-gray-200 font-mono font-medium">
-            {(toAmount * 0.998).toFixed(2)} {toToken.symbol}
+          <span className="text-gray-500 block text-[9px] uppercase">Min Received</span>
+          <span className="text-gray-200 font-medium">
+            {minReceived} {toToken.symbol}
           </span>
         </div>
         <div>
-          <span className="text-gray-500 block text-[10px]">Network Fee</span>
-          <span className="text-gray-200 font-mono font-medium">~0.00005 SOL</span>
+          <span className="text-gray-500 block text-[9px] uppercase">Network Fee</span>
+          <span className="text-gray-200 font-medium">~0.00005 SOL</span>
         </div>
       </div>
     </div>

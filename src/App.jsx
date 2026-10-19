@@ -96,7 +96,7 @@ export function App() {
 
         {isMobileFrame ? (
           /* Mobile Phone Frame Wrapper */
-          <div className="relative mx-auto my-4 w-[385px] h-[780px] bg-[#0c1017] rounded-[48px] p-3 shadow-2xl border-4 border-[#252f42] ring-1 ring-white/10 flex flex-col overflow-hidden">
+          <div className="relative mx-auto my-4 w-[375px] sm:w-[385px] h-[780px] bg-[#0c1017] rounded-[48px] p-3 shadow-2xl border-4 border-[#252f42] ring-1 ring-white/10 flex flex-col overflow-hidden">
             {/* Phone Notch */}
             <div className="w-28 h-5 bg-black rounded-full mx-auto mb-2 shrink-0 flex items-center justify-center">
               <div className="w-2.5 h-2.5 rounded-full bg-[#1c2436] mr-3" />
@@ -104,7 +104,7 @@ export function App() {
             </div>
 
             {/* Mobile Viewport Content */}
-            <div className="flex-1 overflow-y-auto rounded-[36px] bg-[#090d14] p-3 space-y-3">
+            <div className="flex-1 overflow-y-auto no-scrollbar rounded-[36px] bg-[#090d14] p-2 space-y-2">
               {isLegacyMode ? (
                 <LegacySwapCard onSwitchToShield={() => setIsLegacyMode(false)} />
               ) : (
