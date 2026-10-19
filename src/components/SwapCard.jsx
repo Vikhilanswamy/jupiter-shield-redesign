@@ -3,15 +3,18 @@ import { ArrowDownUp, RefreshCw, Settings, Sparkles, AlertCircle, ShieldCheck, C
 import confetti from "canvas-confetti";
 import { ShieldSelector } from "./ShieldSelector";
 import { RouteVisualizer } from "./RouteVisualizer";
-import { POPULAR_TOKENS, SHIELD_PRESETS } from "../data/tokens";
+import { SHIELD_PRESETS } from "../data/tokens";
+import { playSuccessChime } from "../utils/sound";
 
 export function SwapCard({
+  fromToken,
+  setFromToken,
+  toToken,
+  setToToken,
   onSwapSuccess,
   isLegacyMode,
   openTokenModal
 }) {
-  const [fromToken, setFromToken] = useState(POPULAR_TOKENS[0]); // SOL
-  const [toToken, setToToken] = useState(POPULAR_TOKENS[1]);   // USDC
   const [fromAmount, setFromAmount] = useState("10");
   const [selectedShield, setSelectedShield] = useState(SHIELD_PRESETS[1]); // Turbo
   const [isSwapping, setIsSwapping] = useState(false);
@@ -23,6 +26,7 @@ export function SwapCard({
     : "0.00";
 
   const handleInvert = () => {
+    playTick();
     const temp = fromToken;
     setFromToken(toToken);
     setToToken(temp);
@@ -39,6 +43,7 @@ export function SwapCard({
 
     setTimeout(() => {
       setSwapStep(3); // Confirmed
+      playSuccessChime();
       confetti({
         particleCount: 80,
         spread: 70,
@@ -89,7 +94,10 @@ export function SwapCard({
             <div className="flex items-center gap-1">
               <span>Balance: <strong className="text-gray-200 font-mono">{fromToken.balance} {fromToken.symbol}</strong></span>
               <button
-                onClick={() => setFromAmount(String(fromToken.balance))}
+                onClick={() => {
+                  playTick();
+                  setFromAmount(String(fromToken.balance));
+                }}
                 className="text-[10px] font-bold text-[#c7f284] hover:underline uppercase ml-1"
               >
                 Max
@@ -122,7 +130,10 @@ export function SwapCard({
               {["25%", "50%", "75%"].map((pct) => (
                 <button
                   key={pct}
-                  onClick={() => setFromAmount(((fromToken.balance * parseInt(pct)) / 100).toFixed(2))}
+                  onClick={() => {
+                    playTick();
+                    setFromAmount(((fromToken.balance * parseInt(pct)) / 100).toFixed(2));
+                  }}
                   className="px-2 py-0.5 rounded bg-[#1c2434] hover:bg-[#263147] text-[10px] text-gray-400 hover:text-white"
                 >
                   {pct}

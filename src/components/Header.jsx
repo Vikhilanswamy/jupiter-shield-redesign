@@ -6,7 +6,8 @@ export function Header({
   setIsMobileFrame,
   isLegacyMode,
   setIsLegacyMode,
-  onOpenCaseStudy
+  onOpenCaseStudy,
+  onOpenGallery
 }) {
   return (
     <header className="border-b border-[#1c2230] bg-[#0c0e14]/90 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 py-3.5">
@@ -95,6 +96,16 @@ export function Header({
             <BookOpen className="w-3.5 h-3.5 text-[#c7f284]" />
             <span className="hidden sm:inline">UX Case Study</span>
             <span className="sm:hidden">Docs</span>
+          </button>
+
+          {/* Before/After Gallery Trigger */}
+          <button
+            onClick={onOpenGallery}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#172233] hover:bg-[#202e45] text-xs font-semibold text-sky-300 border border-[#253754] transition-all hover:border-sky-400/50 shadow-sm"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+            <span className="hidden sm:inline">Before vs After</span>
+            <span className="sm:hidden">Diff</span>
           </button>
 
           {/* Simulated Wallet Pill */}
